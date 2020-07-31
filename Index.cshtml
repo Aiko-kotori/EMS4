@@ -1,0 +1,134 @@
+@model IEnumerable<EMS.Models.t_career>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<head>
+    <link rel="stylesheet" href="~/Content/bootstrap.css" type="text/css" />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+
+
+<h1>スキルシート表示画面</h1>
+@Html.Partial("_Header")
+<div class="text-right">
+    <button type="button" class="btn btn-outline-success">@Html.ActionLink("従業員一覧画面", "Index", "m_employee")</button><br />
+</div>
+
+@*個人プロフィール*@
+<div class="table-responsive">
+    <table class="table-info" table border="1">
+        <colgroup span="1"></colgroup>
+        <tr><th scope="row">スキルシート表示名</th><td>ELT2020</td></tr>
+        <tr><th scope="row">性別</th><td>男性</td></tr>
+        <tr><th scope="row">年齢</th><td>33</td></tr>
+        <tr><th scope="row">最終学歴</th><td>東京大学</td></tr>
+        <tr><th scope="row">路線名<br />最寄り駅</th><td>JR埼京線<br />板橋駅</td></tr>
+        <tr><th scope="row">希望業務</th><td><div class="d1">web関係</div><br /><br /><br /></td></tr>
+    </table>
+
+
+    <div class="technical">
+        <div class="d2">技術分野、経験のある分野</div>
+        <div class="box">
+            Androidデバイスドライバ<br />車載システム
+        </div>
+
+    </div>
+    <div class="skill">
+        <p><u>マネージャー歴：@Html.Display("Maneger") </u></p>
+        <p><u>リーダー歴：@Html.Display("Leader")</u></p>
+        <p><u>サブマネージャー歴：@Html.Display("SubMane")</u></p>
+        <p><u>メンバー歴：@Html.Display("Member")</u></p>
+    </div>
+</div>
+<br />
+
+@*経歴追加ボタンと作業区分の説明*@
+<font size="2">企画･立案=SP、要求分析=RA、基本設計=BD、システム設計=SD、詳細設計=DD、プログラミング=PG、単体テスト=PT、結合テスト=ST、その他=ETC</font>
+<button type="button" class="btn btn-outline-success">@Html.ActionLink("経歴追加", "create")</button>
+
+@*経歴一覧の表示*@
+<table border="1" class="table">
+    <tr class="table table-danger">
+        <th class="no">NO</th>
+        <th class="contents">件名・内容・担当作業項目</th>
+        <th class="work">作業区分</th>
+        <th class="position">ポジション</th>
+        <th class="tool">機種・OS<br />機器<br />マイコン</th>
+        <th class="tool">言語・DB<br />開発ツール<br />ミドルウェア</th>
+        <th class="start-end">案件開始日<br />終了日</th>
+        <th class="customer">顧客名<br />現場名</th>
+        <th class="memo">備考</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @int num = 0;
+            <th class="table-controll">
+                num += 1;
+            </th>
+            <th>
+                案件名：@Html.DisplayFor(modelItem => item.item_nm)
+                <br>
+                @Html.DisplayFor(modelItem => item.item_detail)
+            </th>
+
+            <th class="workall">
+                <center>
+                    <table class="work">
+                        <tr>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_sp)</th>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_ra)</th>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_bd)</th>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_sd)</th>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_dd)</th>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_pg)</th>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_pt)</th>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_st)</th>
+                            <th>@Html.DisplayFor(modelItem => item.work_class_etc)</th>
+                        </tr>
+                    </table>
+                </center>
+            </th>
+            <th class="table-controll">@Html.DisplayFor(modelItem => item.m_position.position_name)</th>
+
+            <th class="table-controll">@Html.DisplayFor(modelItem => item.os_nm)</th>
+            <th class="table-controll">@Html.DisplayFor(modelItem => item.tools_nm)</th>
+            <th class="table-controll">
+                @Html.DisplayFor(modelItem => item.work_start_date)
+                <br>
+                @Html.DisplayFor(modelItem => item.work_end_date)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.m_customer.customer_nm)
+                <br>
+                @Html.DisplayFor(modelItem => item.work_site_nm)
+            </th>
+            <th>
+                <div class="table-controll2">@Html.DisplayFor(modelItem => item.remarks)</div>
+            </th>
+
+            <td class="no border">
+                <button type="button" class="btn btn-outline-success p-0">
+                    @Html.ActionLink("編集", "Edit", new { id = item.career_no })
+                </button>
+                <button type="button" class="btn btn-outline-success p-0">
+                    @Html.ActionLink("削除", "Delete", new { id = item.career_no })
+                </button>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="text-center">
+    <button type="button" class="btn btn-outline-success">@Html.ActionLink("印刷", "Print")</button>
+</div>
